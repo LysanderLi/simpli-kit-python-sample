@@ -30,6 +30,8 @@ Please update the `config.json` file with your product credentials created in [A
 | TCS34725 | RGB color sensor | Color detection and light sensing |
 | ICM20948 | 9-axis motion sensor | Accelerometer, gyroscope, and magnetometer |
 
+<img src="./images/imei_code.png" width="60%" alt="IMEI Code Location">
+
 ### Services
 - **GNSS Service:** GPS location tracking and position reporting
 - **LBS Service:** Location approximation using cellular tower information
@@ -56,7 +58,7 @@ Please update the `config.json` file with your product credentials created in [A
    - Navigate to **Device Management** → **Device Maintenance** → **Device List**
    - Search using the IMEI code (found on the white sticker on your device)
 
-   ![IMEI Code Location](./images/imei_code.png)
+<img src="./images/sensor_board.png" width="50%" alt="Sensor Board">
 
 3. **Access Device Details**
    - Click **View** to see the device dashboard
@@ -70,7 +72,7 @@ Please update the `config.json` file with your product credentials created in [A
 
    > **Note:** LBS location accuracy can vary from several hundred meters to several kilometers depending on cell tower density, signal strength, and other environmental factors.
 
-   ![LBS Location](./images/obs.png)
+   ![LBS Location](./images/lbs.png)
 
 ### Mobile Application Integration
 
@@ -97,7 +99,7 @@ Please update the `config.json` file with your product credentials created in [A
    - Your device will appear on the home screen when online
    - Tap the device to view the control panel with real-time sensor data
 
-   ![Control Panel](./images/control_panel.jpg)
+   <img src="./images/control_panel.jpg" width="50%" alt="Control Panel">
 
 ### Enterprise Solution Access
 
