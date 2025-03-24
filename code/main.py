@@ -25,7 +25,16 @@ def create_app(name="SimpliKit", version="1.0.0", config_path="/usr/config.json"
     return _app
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":   
+    ret=dataCall.setPDPContext(1, 0, 'BICSAPN', '', '', 0)
+    ret2=dataCall.activate(1)
+    while  ret and ret2:
+        ret=dataCall.setPDPContext(1, 0, 'BICSAPN', '', '', 0)
+        ret2=dataCall.activate(1)
+        if not ret and not ret2:
+            print("Net injection success")
+            break
+        
     while True:
         lte = dataCall.getInfo(1, 0)
         if lte[2][0] == 1:
@@ -33,9 +42,6 @@ if __name__ == "__main__":
             break
         logger.debug('wait lte network normal...')
         utime.sleep(3)
-
-    dataCall.setPDPContext(1, 0, 'BICSAPN', '', '', 0)  # 激活之前，应该先配置APN，这里配置第1路的APN
-    dataCall.activate(1)
     
     app = create_app()
     app.run()
