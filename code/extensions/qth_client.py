@@ -120,8 +120,7 @@ class QthClient(object):
         
     def sotaInfoCallback(self, comp_no, version, url, md5, crc):
         logger.info("sotaInfo comp_no:{} version:{} url:{} md5:{} crc:{}".format(comp_no, version, url, md5, crc))
-        # When firmware download via URL is complete and MCU update is finished, 
-        # you need to get the latest MCU version info and update it through setMcuVer
+        # After downloading firmware via URL and completing MCU update, need to get the latest MCU version info and update via setMcuVer
         Qth.setMcuVer("MCU1", "V1.0.0", self.sotaInfoCallback, self.sotaResultCallback)
 
     def sotaResultCallback(comp_no, result):

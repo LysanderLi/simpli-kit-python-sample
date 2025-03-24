@@ -1,6 +1,6 @@
-# Simpli Kit Python Sample
+# SIMPLI Kit Python Sample
 
-This repository contains Python sample code for working with Acceleronix Simpli-Kit hardware, providing a complete solution for IoT sensor data collection and cloud connectivity.
+This repository contains Python sample code for working with Acceleronix SIMPLI-Kit hardware, providing a complete solution for IoT sensor data collection and cloud connectivity.
 
 ## Project Structure
 
@@ -43,7 +43,7 @@ Please update the `config.json` file with your product credentials created in [A
 ### Hardware Setup
 
 1. **Power the Device**
-   - Connect the Simpli-Kit using a Type-C cable to your laptop or power bank
+   - Connect the SIMPLI-Kit using a Type-C cable to your laptop or power bank
    - The device will automatically connect to the internet using the built-in vSIM
 
 ### Platform Access

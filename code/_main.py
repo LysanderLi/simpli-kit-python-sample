@@ -8,8 +8,7 @@ from usr.extensions import (
     lbs_service,
     sensor_service,
 )
-import sim
-from sim import vsim 
+import vsim
 
 
 logger = getLogger(__name__)
@@ -28,25 +27,6 @@ def create_app(name="SimpliKit", version="1.0.0", config_path="/usr/config.json"
 
 
 if __name__ == "__main__":
-    vsim.enable()
-    while True:
-        if vsim.queryState() == 1:
-            ("vsim use success")
-            break           
-        vsim.enable()
-        utime.sleep(2)
-        print("flooding well network failure")
-
-    ret=dataCall.setPDPContext(1, 0, 'BICSAPN', '', '', 0) # Before activation, configure the APN first, here configure the APN for the first path
-    ret2=dataCall.activate(1)#0 means success, -1 means failure
-    
-    while  ret and ret2:
-        ret=dataCall.setPDPContext(1, 0, 'BICSAPN', '', '', 0)
-        ret2=dataCall.activate(1)
-        if not ret and not ret2:
-            print("Net injection success")
-            break
-        
     while True:
         lte = dataCall.getInfo(1, 0)
         if lte[2][0] == 1:
@@ -54,8 +34,20 @@ if __name__ == "__main__":
             break
         logger.debug('wait lte network normal...')
         utime.sleep(3)
-    
-
-            
+    vsim.enable()
+    if vsim.queryState()!= 1:
+        print("flooding well network failure")
+        vsim.enable()
+    # dataCall.setPDPContext(1, 0, 'BICSAPN', '', '', 0)  # Before activation, configure the APN first, here configure the APN for the first path
+    # dataCall.activate(1)
+    ret=dataCall.setPDPContext(1, 0, 'BICSAPN', '', '', 0)
+    ret2=dataCall.activate(1)
+    while not ret and ret2:
+        ret=dataCall.setPDPContext(1, 0, 'BICSAPN', '', '', 0)  # Before activation, configure the APN first, here configure the APN for the first path
+        ret2=dataCall.activate(1)
+        if  ret and ret2:
+            print("Net injection failure")
+            break
+                
     app = create_app()
     app.run()

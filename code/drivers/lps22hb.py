@@ -81,7 +81,7 @@ if __name__ == '__main__':
     print("\nPressure Sensor Test Program ...\n")
     from machine import I2C
 
-    lps22hb=Lps22hb(I2C(I2C.I2C0, I2C.STANDARD_MODE), LPS22HB_SLAVE_ADDRESS)
+    lps22hb=Lps22hb(I2C(I2C.I2C1, I2C.STANDARD_MODE), LPS22HB_SLAVE_ADDRESS)
     lps22hb.init()
     
     for i in range(100):

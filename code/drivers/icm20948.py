@@ -389,7 +389,7 @@ if __name__ == '__main__':
 
   print("\nSense HAT Test Program ...\n")
   MotionVal=[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
-  icm20948=ICM20948(I2C(I2C.I2C0, I2C.STANDARD_MODE))
+  icm20948=ICM20948(I2C(I2C.I2C1, I2C.STANDARD_MODE))
   while True:
     try:
         icm20948.icm20948_Gyro_Accel_Read()

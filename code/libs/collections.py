@@ -48,25 +48,25 @@ class DoubleLinkList(object):
         return self.__root.next is None
 
     def add(self, obj):
-        """头插"""
+        """Insert at head"""
         node = _Node(obj, next_=self.__root.next, prev=self.__root)
         self.__root.next.prev = node
         self.__root.next = node
         return node
 
     def append(self, obj):
-        """尾插"""
+        """Insert at tail"""
         node = _Node(obj, next_=self.__root, prev=self.__root.prev)
         self.__root.prev.next = node
         self.__root.prev = node
         return node
 
     def insert(self, obj1, obj2):
-        """指定位置插入（将obj2插入obj1前）
+        """Insert at specified position (insert obj2 before obj1)
 
-        :param obj1: 节点数据域元素
-        :param obj2: 节点数据域元素
-        :return: obj2所属节点_Node
+        :param obj1: Node data element
+        :param obj2: Node data element
+        :return: _Node containing obj2
         """
         pos = self.search(obj2)
         if pos is None:
@@ -77,21 +77,21 @@ class DoubleLinkList(object):
         return node
 
     def search(self, obj):
-        """查找data所属节点，obj的类型必须实现__eq__
+        """Find the node containing the data, obj type must implement __eq__
 
-        :param obj: 链表节点数据域元素
-        :return: _Node节点 或 None
+        :param obj: Linked list node data element
+        :return: _Node or None
         """
         for node in self:
             if node.obj == obj:
                 return node
 
     def remove(self, obj):
-        """删除obj所属节点
+        """Delete the node containing obj
 
-        :param obj: 链表节点数据域元素
+        :param obj: Linked list node data element
         :return: None
-        :raise: 元素节点不存在抛ValueError
+        :raise: ValueError if node does not exist
         """
         node = self.search(obj)
         if node is None:

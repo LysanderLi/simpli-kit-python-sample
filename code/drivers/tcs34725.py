@@ -89,7 +89,7 @@ class Tcs34725(I2CIOWrapper):
         super().__init__(i2c, slaveaddr)
         self.debug = debug
         #Set GPIO mode
-        self.INT = ExtInt(ExtInt.GPIO37, ExtInt.IRQ_FALLING, ExtInt.PULL_PU, lambda args: print(args))
+        self.INT = ExtInt(ExtInt.GPIO29, ExtInt.IRQ_FALLING, ExtInt.PULL_PU, lambda args: print(args))
         self.INT.enable()
         if (self.debug):
           print("Reseting TSL2581")
@@ -304,7 +304,7 @@ class Tcs34725(I2CIOWrapper):
 
 if __name__ == "__main__":
     from machine import I2C
-    tcs34725 = Tcs34725(I2C(I2C.I2C0, I2C.STANDARD_MODE), TCS34725_SLAVE_ADDR)
+    tcs34725 = Tcs34725(I2C(I2C.I2C1, I2C.STANDARD_MODE), TCS34725_SLAVE_ADDR)
     tcs34725.init()
     
     time.sleep(2)
