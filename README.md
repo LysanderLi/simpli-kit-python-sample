@@ -17,7 +17,7 @@ Please update the `config.json` file with your product credentials created in [A
    {
        "QTH_PRODUCT_KEY": "your_product_key",
        "QTH_PRODUCT_SECRET": "your_product_secret",
-       "QTH_SERVER": "mqtt://your-server-address:1883"
+       "QTH_SERVER": "mqtt://iot-south.acceleronix.io:1883"
    }
    ```
 ## Hardware Components
@@ -30,7 +30,7 @@ Please update the `config.json` file with your product credentials created in [A
 | TCS34725 | RGB color sensor | Color detection and light sensing |
 | ICM20948 | 9-axis motion sensor | Accelerometer, gyroscope, and magnetometer |
 
-<img  src="/images/sensor_board.png"  alt="Sensor Board"  width="700px"  height="auto">
+<img  src="/images/sensor_board.png"  alt="Sensor Board"  width="400px"  height="auto">
 
 ### Services
 - **GNSS Service:** GPS location tracking and position reporting
@@ -74,10 +74,6 @@ Here’s a look at the boards of the SIMPLI-Kit:
 - EG912U-GL QuecPython board:
 
 <img  src="/images/quecpython_board_overview.png"  alt="QuecPython Board Overview"  width="300px"  height="auto">
-
-- Raspberry Pi Sensor HAT B
-
-<img  src="/images/raspberry_pi_sensor_hat_b_board.png"  alt="Raspberry Pi Sensor HAT B Board"  width="300px"  height="auto">
 
 ##### 1.1.6 Included Accessories
 
