@@ -1,4 +1,4 @@
-"""Subscription/Publish mechanism based on QuecPython"""
+"""基于 QuecPython 的订阅/发布机制"""
 
 
 from usr.libs.threading import Thread, Queue, Lock
@@ -57,18 +57,18 @@ def get_default_publisher():
 
 
 def publish(topic, **kwargs):
-    """Publish message"""
+    """订阅消息"""
     pub = get_default_publisher()
     pub.publish(topic, **kwargs)
 
 
 def subscribe(topic, listener):
-    """Subscribe to message"""
+    """订阅消息"""
     pub = get_default_publisher()
     pub.subscribe(topic, listener)
 
 
 def unsubscribe(topic, listener):
-    """Unsubscribe from message"""
+    """取消订阅消息"""
     pub = get_default_publisher()
     pub.unsubscribe(topic, listener)

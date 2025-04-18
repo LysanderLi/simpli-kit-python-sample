@@ -15,7 +15,7 @@ class SensorService(object):
 
     def __init__(self, app=None):
         # i2c channel 0 
-        self.i2c_channel0 = I2C(I2C.I2C0, I2C.STANDARD_MODE)
+        self.i2c_channel0 = I2C(I2C.I2C1, I2C.STANDARD_MODE)
         # SHTC3
         self.shtc3 = Shtc3(self.i2c_channel0, SHTC3_SLAVE_ADDR)
         self.shtc3.init()
@@ -120,7 +120,7 @@ class SensorService(object):
                     prev_b = prev_rgb888 & 0xFF
                     db = abs(b - prev_b)
 
-                    # Color difference greater than 150 indicates a color change
+                    # 色差超过 150 即认为颜色有变化
                     if pow(sum((dr*dr, dg*dg, db*db)), 0.5) >= 150:
                         data.update({7: {1: r, 2: g, 3: b}})
                         prev_rgb888 = rgb888

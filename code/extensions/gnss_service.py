@@ -3,6 +3,8 @@ import quecgnss
 from usr.libs import CurrentApp
 from usr.libs.threading import Thread
 from usr.libs.logging import getLogger
+import _thread
+from .import qth_client
 try:
     from math import sin, asin, cos, radians, fabs, sqrt
 except:
@@ -22,7 +24,7 @@ except:
     
     def asin(x):
         low, high = -1, 1
-        while abs(high - low) > 1e-10:  # Precision control
+        while abs(high - low) > 1e-10:  # 精度控制
             mid = (low + high) / 2.0
             if sin(mid) < x:
                 low = mid
@@ -34,8 +36,8 @@ except:
 logger = getLogger(__name__)
 
 
-EARTH_RADIUS = 6371  # Average Earth radius in kilometers
-GLOBAL_DISTANCE = 0  # Distance in kilometers
+EARTH_RADIUS = 6371  # 地球平均半径大约6371km
+GLOBAL_DISTANCE = 0  # 里程km
 
 
 def hav(theta):
@@ -44,8 +46,8 @@ def hav(theta):
 
 
 def gps_distance(lat0, lng0, lat1, lng1):
-    # Calculate distance between two points on a sphere using haversine formula
-    # Convert latitude and longitude to radians
+    # 用haversine公式计算球面两点间的距离
+    # 经纬度转换成弧度
     lat0 = radians(lat0)
     lat1 = radians(lat1)
     lng0 = radians(lng0)
@@ -119,9 +121,9 @@ class GnssService(object):
         return True
 
     def status(self):
-        # 0	int	GNSS module is off
-        # 1	int	GNSS module firmware is being upgraded
-        # 2	int GNSS module is positioning, in this mode you can start reading GNSS positioning data, whether the positioning data is valid needs to be judged by the user after obtaining the positioning data, for example, by judging whether the status of the GNRMC sentence is A or V, A means the positioning is valid, V means the positioning is invalid.
+        # 0	int	GNSS模块处于关闭状态
+        # 1	int	GNSS模块固件升级中
+        # 2	int GNSS模块定位中，这种模式下即可开始读取GNSS定位数据，定位数据是否有效需要用户获取到定位数据后，解析对应语句来判断，比如判断GNRMC语句的status是 A 还是 V，A 表示定位有效，V表示定位无效。
         return self.__gnss.get_state()
 
     def enable(self, flag=True):
@@ -159,7 +161,7 @@ class GnssService(object):
                             if nmea_tuple[4] == "S":
                                 lat = -lat
                             
-                            lng_string = nmea_tuple[5]  # Unit: minutes
+                            lng_string = nmea_tuple[5]  # 11755.787896484374（单位：分）
                             lng_high = float(lng_string[:3])
                             lng_low = float(lng_string[3:]) / 60
                             lng = lng_high + lng_low
@@ -182,7 +184,7 @@ class GnssService(object):
                             if nmea_tuple[3] == "S":
                                 lat = -lat
 
-                            lng_string = nmea_tuple[4]  # Unit: minutes
+                            lng_string = nmea_tuple[4]  # 11755.787896484374（单位：分）
                             lng_high = float(lng_string[:3])
                             lng_low = float(lng_string[3:]) / 60
                             lng = lng_high + lng_low
@@ -196,7 +198,7 @@ class GnssService(object):
                 # logger.debug("prev_lat_and_lng: {}".format(prev_lat_and_lng))
                 logger.debug("lat_and_lng: {}".format((lat, lng)))
                 if prev_lat_and_lng is None:
-                    # First position fix
+                    # 首次定位
                     for _ in range(3):
                         with CurrentApp().qth_client:
                             if CurrentApp().qth_client.sendGnss(nmea_data):
@@ -206,7 +208,7 @@ class GnssService(object):
                     else:
                         logger.error("send gnss to qth server fail")
                 else:
-                    # Report if displacement exceeds 50m
+                    # 或者位移超过 50m，则上报
                     distance = gps_distance(prev_lat_and_lng[0], prev_lat_and_lng[1], lat, lng)
                     logger.debug('distance delta: {:f}'.format(distance))
                     if distance >= 0.05:
@@ -219,3 +221,5 @@ class GnssService(object):
                         else:
                             logger.error("send gnss to qth server fail")
             utime.sleep(3)
+
+
