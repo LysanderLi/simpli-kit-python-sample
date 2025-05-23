@@ -44,6 +44,8 @@ Please update the `config.json` file with your product credentials created in [A
 
 The SIMPLI-Kit by Acceleronix lets you connect effortlessly to the Acceleronix Asset Management SaaS, enabling quick cloud service demos with zero setup hassle. This guide will walk you through using the SIMPLI-Kit to explore platform features seamlessly.
 
+You can visit this [webpage](https://www.acceleronix.io/products/simpli-kit) to access more details about the product.
+
 #### 1.1 What is SIMPLI-Kit?
 
 The SIMPLI-Kit is your gateway to exploring the Acceleronix Asset Management SaaS. Built on the QuecPython **EG912U-GLAA** evaluation board, it’s designed for fast, plug-and-play connectivity.
