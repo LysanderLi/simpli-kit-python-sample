@@ -97,7 +97,6 @@ Your SIMPLI-Kit comes with the following accessories:
 
 Let’s get started! Follow these steps to power up your SIMPLI-Kit:
 
-
 1. Connect the SIMPLI-Kit to your laptop or a power bank using the provided USB-C cable.
 
 2. The device will power on, automatically connect to the internet via vSIM, and link to the Acceleronix Asset Management SaaS.
@@ -151,6 +150,8 @@ Access the Asset Management SaaS Application using the demo account below:
 2. Hover over the QR code icon in the Basic Information section to display the Device QR code.
 
 <img  src="/images/device_qr_code.png"  alt="Device QR Code"  width="700px"  height="auto">
+
+> **Note**: You can also find the QR code on the bottom of the SIMPLI Kit device.
 
 #### 4.2 Download the App and Add Your Device
 
