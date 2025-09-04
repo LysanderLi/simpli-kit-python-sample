@@ -6,9 +6,9 @@ This repository contains Python sample code for working with Acceleronix SIMPLI-
 
 The project is organized into the following components:
 
-- **Main Application:** Entry point that initializes all services
+- **Main Application:** Entry point that initializes all services with intelligent SIM management
 - **Drivers:** Hardware interfaces for various sensors (SHTC3, LPS22HB, TCS34725, ICM20948)
-- **Extensions:** Services for GNSS, LBS, sensors, and Acceleronix cloud connectivity
+- **Extensions:** Services for GNSS, LBS, sensors, buzzer control, fan control, SIM management, and Acceleronix cloud connectivity
 - **Libraries:** Utility modules for I2C communication, threading, logging, etc.
 
 ## Configuration
@@ -33,10 +33,44 @@ Please update the `config.json` file with your product credentials created in [A
 <img  src="/images/sensor_board.png"  alt="Sensor Board"  width="400px"  height="auto">
 
 ### Services
+
+#### Core Services
 - **GNSS Service:** GPS location tracking and position reporting
 - **LBS Service:** Location approximation using cellular tower information
 - **Sensor Service:** Collection and aggregation of sensor data
 - **Qth Client:** Cloud connectivity and data transmission
+
+#### Hardware Control Services
+- **Buzzer Service:** Buzzer control with GPIO management and hot-plug support
+  - ON/OFF control via cloud commands
+  - Hardware detection and fallback simulation
+  - Status reporting and monitoring
+  
+- **Fan Service:** PWM-based fan control with multiple speed modes
+  - Fan switch control (ON/OFF)
+  - Speed modes: Low (1), Medium (2), High (3)
+  - PWM hardware detection and simulation fallback
+
+#### System Services
+- **SIM Service:** Intelligent SIM card management
+  - Automatic detection of physical SIM and vSIM
+  - Priority-based selection (physical SIM first, vSIM fallback)
+  - Real-time SIM status monitoring
+  - Automatic switching capabilities
+
+## Enhanced Features
+
+### Intelligent SIM Management
+The application now includes automatic SIM card detection and management:
+- **Priority-based Selection**: Automatically detects and uses physical SIM first, falls back to vSIM if needed
+- **Hot-plugging Support**: Monitors SIM status and handles SIM card changes dynamically
+- **Network Optimization**: Ensures optimal connectivity with automatic switching capabilities
+
+### Hardware Extension Support
+New modular hardware services provide:
+- **Buzzer Control**: GPIO-based buzzer management with hardware detection
+- **Fan Control**: PWM-based fan speed control with multiple modes
+- **Hot-plug Detection**: Services gracefully handle hardware availability changes
 
 ## Getting Started
 

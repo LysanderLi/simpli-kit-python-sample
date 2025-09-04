@@ -93,7 +93,7 @@ class Shtc3(I2CIOWrapper):
 
 if __name__ == "__main__":
     from machine import I2C
-    shtc3_dev = Shtc3(I2C(I2C.I2C1, I2C.STANDARD_MODE), SHTC3_SLAVE_ADDR)
+    shtc3_dev = Shtc3(I2C(I2C.I2C0, I2C.STANDARD_MODE), SHTC3_SLAVE_ADDR)
     shtc3_dev.init()
     for i in range(100):
         shtc3_dev.wakeup()

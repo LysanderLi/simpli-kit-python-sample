@@ -122,8 +122,7 @@ MAG_DATA_LEN                         =6
 class ICM20948(I2CIOWrapper):
   def __init__(self, i2c, address=I2C_ADD_ICM20948):
     super().__init__(i2c, address)
-
-
+    
     bRet=self.icm20948Check()             #Initialization of the device multiple times after power on will result in a return error
     # while true != bRet:
     #   print("ICM-20948 Error\n" )
@@ -182,6 +181,9 @@ class ICM20948(I2CIOWrapper):
       Gyro[2]=Gyro[2]-65535
     elif Gyro[2]<=-32767:
       Gyro[2]=Gyro[2]+65535
+
+    return Accel,Gyro
+
   def icm20948MagRead(self):
     counter=20
     while(counter>0):
@@ -237,6 +239,7 @@ class ICM20948(I2CIOWrapper):
     self._write_byte( REG_ADD_I2C_SLV0_CTRL,  u8Temp)
     
     self._write_byte( REG_ADD_REG_BANK_SEL, REG_VAL_REG_BANK_0) #swtich bank0
+    
   def icm20948WriteSecondary(self,u8I2CAddr,u8RegAddr,u8data):
     u8Temp=0
     self._write_byte( REG_ADD_REG_BANK_SEL,  REG_VAL_REG_BANK_3) #swtich bank3
@@ -261,6 +264,7 @@ class ICM20948(I2CIOWrapper):
     self._write_byte( REG_ADD_I2C_SLV0_CTRL,  u8Temp)
 
     self._write_byte( REG_ADD_REG_BANK_SEL, REG_VAL_REG_BANK_0) #swtich bank0
+
   def icm20948GyroOffset(self):
     s32TempGx = 0
     s32TempGy = 0
@@ -360,6 +364,7 @@ class ICM20948(I2CIOWrapper):
     q1 = q1 * norm
     q2 = q2 * norm
     q3 = q3 * norm
+
   def icm20948Check(self):
     bRet=false
     if REG_VAL_WIA == self._read_byte(REG_ADD_WIA):

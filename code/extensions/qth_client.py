@@ -43,10 +43,20 @@ class QthClient(object):
         self.start()
 
     def start(self):
-        Qth.start()
+        with self.opt_lock:
+            if not Qth.state():
+                logger.info("Starting QTH connection")
+                Qth.start()
+            else:
+                logger.debug("QTH connection already active")
     
     def stop(self):
-        Qth.stop()
+        with self.opt_lock:
+            if Qth.state():
+                logger.info("Stopping QTH connection")
+                Qth.stop()
+            else:
+                logger.debug("QTH connection already stopped")
     def sendTsl(self, mode, value):
         return Qth.sendTsl(mode, value)
 
@@ -69,41 +79,113 @@ class QthClient(object):
         logger.info("recvTrans value:{} ret:{}".format(value, ret))
 
     def recvTslCallback(self, value):
-        logger.info("recvTsl:{}".format(value))
-        for cmdId, val in value.items():
-            logger.info("recvTsl {}:{}".format(cmdId, val))
+        with self.opt_lock:
+            logger.info("recvTsl:{}".format(value))
+            for cmdId, val in value.items():
+                logger.info("recvTsl {}:{}".format(cmdId, val))
+                
+                # Handle fan control commands
+                if cmdId == 11:  # Fan switch control
+                    try:
+                        fan_service = CurrentApp().fan_service
+                        logger.info("Raw fan switch value: {} (type: {})".format(val, type(val)))
+                        success = fan_service.set_fan_switch(bool(val))
+                        logger.info("Fan switch command: {} (converted to: {}) - {}".format(val, bool(val), "Success" if success else "Failed"))
+                    except Exception as e:
+                        logger.error("Failed to process fan switch command: {}".format(e))
+                        
+                elif cmdId == 12:  # Fan mode control
+                    try:
+                        fan_service = CurrentApp().fan_service
+                        success = fan_service.set_fan_mode(int(val))
+                        logger.info("Fan mode command: {} - {}".format(val, "Success" if success else "Failed"))
+                    except Exception as e:
+                        logger.error("Failed to process fan mode command: {}".format(e))
+                        
+                elif cmdId == 13:  # Buzzer switch control
+                    try:
+                        buzzer_service = CurrentApp().buzzer_service
+                        success = buzzer_service.set_buzzer_switch(bool(val))
+                        logger.info("Buzzer switch command: {} - {}".format(val, "Success" if success else "Failed"))
+                    except Exception as e:
+                        logger.error("Failed to process buzzer switch command: {}".format(e))
     def readTslCallback(self, ids, pkgId):
         logger.info("readTsl ids:{} pkgId:{}".format(ids, pkgId))
-        value=dict()
+        value = dict()
         
-        temp1, humi =CurrentApp().sensor_service.get_temp1_and_humi()
-        press, temp2 = CurrentApp().sensor_service.get_press_and_temp2()
-        r,g,b = CurrentApp().sensor_service.get_rgb888()
-
-        value={
-            3:temp1,
-            4:humi,
-            5:temp2,
-            6:press,
-            7:{1:r, 2:g, 3:b},
-    
-        }
-        lbs=lbs_service.LbsService()
-        lbs.put_lbs()
-
-
+        # Get sensor data with hot-plug support
+        temp1, humi = None, None
+        try:
+            temp1, humi = CurrentApp().sensor_service.get_temp1_and_humi()
+        except Exception as e:
+            pass
         
+        press, temp2 = None, None
+        try:
+            press, temp2 = CurrentApp().sensor_service.get_press_and_temp2()
+        except Exception as e:
+            pass
+        
+        # TCS34725 color sensor data reporting disabled
+        # r, g, b = None, None, None
+        # try:
+        #     r, g, b = CurrentApp().sensor_service.get_rgb888()
+        # except Exception as e:
+        #     pass
+
+        accel, gyro = None, None
+        try:
+            accel, gyro = CurrentApp().sensor_service.get_accel_gyro()
+        except Exception as e:
+            pass
+
+        # Get fan status
+        fan_status = None
+        try:
+            fan_status = CurrentApp().fan_service.get_fan_status()
+        except Exception as e:
+            pass
+
+        # Get buzzer status
+        buzzer_status = None
+        try:
+            buzzer_status = CurrentApp().buzzer_service.get_buzzer_status()
+        except Exception as e:
+            pass
+
+        # Build response based on requested IDs and data availability
         for id in ids:
-            if 3 == id:
-                value[3]=temp1
-            elif 4 == id:
-                value[4]=humi
-            elif 5 == id:
-                value[5]=temp2
-            elif 6 == id:
-                value[6]=press
-            elif 7 == id:
-                value[7]={1:r, 2:g, 3:b}
+            if id == 3 and temp1 is not None:
+                value[3] = temp1
+            elif id == 4 and humi is not None:
+                value[4] = humi
+            elif id == 5 and temp2 is not None:
+                value[5] = temp2
+            elif id == 6 and press is not None:
+                value[6] = press
+            # TCS34725 color sensor data reporting disabled
+            # elif id == 7 and r is not None and g is not None and b is not None:
+            #     value[7] = {1: r, 2: g, 3: b}
+            elif id == 9 and gyro is not None:
+                value[9] = {1: gyro[0], 2: gyro[1], 3: gyro[2]}
+            elif id == 10 and accel is not None:
+                value[10] = {1: accel[0], 2: accel[1], 3: accel[2]}
+            elif id == 11 and fan_status is not None:
+                value[11] = fan_status['switch']
+            elif id == 12 and fan_status is not None:
+                value[12] = fan_status['mode']
+            elif id == 13 and buzzer_status is not None:
+                value[13] = buzzer_status['switch']
+            else:
+                pass
+
+        # LBS service
+        try:
+            lbs = lbs_service.LbsService()
+            lbs.put_lbs()
+        except Exception as e:
+            pass
+
         Qth.ackTsl(1, value, pkgId)
        
         
