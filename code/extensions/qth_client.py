@@ -167,9 +167,9 @@ class QthClient(object):
             # elif id == 7 and r is not None and g is not None and b is not None:
             #     value[7] = {1: r, 2: g, 3: b}
             elif id == 9 and gyro is not None:
-                value[9] = {1: gyro[0], 2: gyro[1], 3: gyro[2]}
+                value[9] = {1: CurrentApp().sensor_service.round_if_needed(gyro[0]), 2: CurrentApp().sensor_service.round_if_needed(gyro[1]), 3: CurrentApp().sensor_service.round_if_needed(gyro[2])}
             elif id == 10 and accel is not None:
-                value[10] = {1: accel[0], 2: accel[1], 3: accel[2]}
+                value[10] = {1: CurrentApp().sensor_service.round_if_needed(accel[0]), 2: CurrentApp().sensor_service.round_if_needed(accel[1]), 3: CurrentApp().sensor_service.round_if_needed(accel[2])}
             elif id == 11 and fan_status is not None:
                 value[11] = fan_status['switch']
             elif id == 12 and fan_status is not None:

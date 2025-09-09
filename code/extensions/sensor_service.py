@@ -180,6 +180,10 @@ class SensorService(object):
         return len(decimal_part)
     
     def round_if_needed(self,value):
+        # 检查异常大数值，防止传输异常数据
+        if abs(value) > 100.0:
+            return 0.0
+            
         if self.count_decimal_digits(value) > 15:    
             for precision in range(15, 7, -1):
                 rounded = round(value, precision)
