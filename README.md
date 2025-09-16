@@ -72,6 +72,20 @@ New modular hardware services provide:
 - **Fan Control**: PWM-based fan speed control with multiple modes
 - **Hot-plug Detection**: Services gracefully handle hardware availability changes
 
+## Firmware Development
+
+### Base Firmware
+The `base_firmware/` directory contains the QuecPython base firmware required for building custom firmware with this sample code:
+
+- **EG912UGLAAR05A01M08_TEST0220.zip**: QuecPython base firmware for EG912U-GLAA module
+- Developers can merge this base firmware with the Python code in this repository to generate custom firmware
+- This enables creating standalone firmware images that include both the base system and your application code
+
+To build custom firmware, developers should:
+1. Use the base firmware from the `base_firmware/` directory
+2. Combine it with the Python application code from this repository
+3. Follow the official QuecPython documentation for combining firmware and scripts: [QPYcom Merge Tutorial](https://developer.quectel.com/doc/quecpython/Application_guide/en/dev-tools/QPYcom/qpycom-merge.html)
+
 ## Getting Started
 
 ### 1. Get to Know Your SIMPLI-Kit
